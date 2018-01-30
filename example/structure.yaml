@@ -1,0 +1,16 @@
+{{project.name}}:
+  files:
+    - '{{foo.file_name}}.py':
+        content: {{foo.content}}
+    - 'bar.py':
+        template: bar.py
+  'test1':
+    test3:
+      files:
+        - more:
+            content: abc
+  test2:
+    test3:
+      files:
+        - more:
+            content: abc

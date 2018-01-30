@@ -1,0 +1,9 @@
+testfile2:
+  content: expanded content
+test1:
+  test2:
+    filename: expanded_filename
+list:
+  - foo
+  - bar
+  - foobar

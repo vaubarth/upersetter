@@ -1,0 +1,4 @@
+test:
+  files:
+    - 'index.html':
+        template: template.html

@@ -1,0 +1,9 @@
+project:
+  name:
+    _help: This is a help text
+foo:
+  file_name:
+    _choices:
+      - foobaz
+      - foobar
+      - baz

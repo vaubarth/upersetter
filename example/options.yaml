@@ -1,0 +1,12 @@
+project:
+  name: foo
+  version: 1
+foo:
+  file_name: foo
+  content: bar
+bar:
+  content:
+    var: abc
+    imports:
+      - os
+      - pathlib
