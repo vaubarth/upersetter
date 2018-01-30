@@ -115,13 +115,16 @@ class Interact:
         self._metadata = metadata
         self._options = options
 
-    def do_interaction(self, parent=''):
-        # Iterate through all options until we have a leaf node, the execute the prompt
+    def do_interaction(self, options=None, parent=''):
+        # Iterate through all options until we have a leaf node, then execute the prompt
+        if parent == '':
+            options = self._options
         try:
-            for k, v in self._options.items():
-                self.do_interaction(parent + '.' + k)
+            for k, v in options.items():
+                self.do_interaction(v, parent + '.' + k)
         except AttributeError:
-            self._ask(parent, self._options)
+            self._ask(parent, options)
+        print(self._options)
         return self._options
 
     def _ask(self, parent, options):

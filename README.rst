@@ -56,6 +56,14 @@ Doing more useful stuff
 -----------------------
 ...
 
+Structure syntax
+^^^^^^^^^^^^^^^^
+Folders
+
+Files
+    - content
+    - template
+    - remote
 
 Options and templates
 ^^^^^^^^^^^^^^^^^^^^^
