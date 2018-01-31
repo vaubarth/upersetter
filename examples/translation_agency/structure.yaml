@@ -1,0 +1,14 @@
+{{customer.name}}:
+  {{project.name}}:
+    files:
+      - description.txt:
+          content: {{project.description}}
+    orig_{{languages.orig}}:
+      files:
+        - info.txt:
+            template: orig.txt
+    {% for language in languages.to %}to_{{language.lang}}:
+      files:
+        - translator.txt:
+            content: 'Translator: {{language.translator}}'
+    {% endfor %}

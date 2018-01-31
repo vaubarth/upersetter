@@ -1,0 +1,16 @@
+customer:
+  name: Acme
+project:
+  name: Website
+  description: Translate the company webpage
+  due_date: 1.1.2078
+  wordcount: 7532
+languages:
+  orig: EN
+  to:
+    - lang: FR
+      translator: Anna
+    - lang: DE
+      translator: Jörg
+    - lang: DK
+      translator: Susi
