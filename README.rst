@@ -36,41 +36,101 @@ Describing your project can be done either in the form of yaml files or in code 
 In the most basic case you describe the structure of your project in a file called *structure.yaml*::
 
    topfolder:
-     files:
-       - afile:
-           content: somecontent
-     subfolder:
-       subsubfolder:
-         files:
-           - anotherfile:
-               content: abc
+    files:
+        - afile:
+            content: somecontent
+    subfolder:
+        subsubfolder:
+            files:
+                - anotherfile:
+                    content: abc
 
 You then execute the following command::
 
-   python -m upersetter setup folder path/to/your/structure.yaml
+    python -m upersetter setup folder path/where/the/structure
 
 The project will then be created in your current working directory.
 
 In the above example upersetter will create a folder with the name *topfolder*.
 Underneath that a file with the name *afile* and the content *somecontent*, as well as a folder with the name *subfolder* will be created. *subfolder* again has a subfolder *subsubfolder* which contains the file *anotherfile* with the content *abc*
 
+However upersetter provides much more dynamic ways to create a project from templates, the commandline or even remote resources.
 
-Doing more useful stuff
------------------------
-...
+Advanced usage
+--------------
+Following generally useful advanced features of upersetter will be described.
+    Full featured examples can be found in the  examples_ folder which shows usages of all features available.
 
 Structure syntax
 ^^^^^^^^^^^^^^^^
 A structure file primarily contains two kinds of elements: folders and files
 
-In general the structure file resembles a directory tree, however there is some special syntax to denote how a file should be created or filled with content.
+In general the structure file resembles a directory tree, however there is some special syntax to denote how files and folders should be created or filled with content.
 
-- <name of folder>:
+In general a structure file looks like this::
+
+    <name of folder>:
+        <name of subfolder>:
+            files:
+                - <name of file>:
+                    <creation of file: content/template>
+        files:
+            - <name of file>:
+                <creation of file: content/template>
+        <name of second subfolder>:
+
+Folders are a dictionary keys in the yaml file. Folders can have files and other folders as sub-entries::
+
+    topfolder:
+        subfolder:
+            ...
+    another topfolder:
+        ...
+
+A list of files is started with a ``files:`` entry
+After that a list of key value pairs representing the filename as the key and the way how to create the file as the value describes the files::
+
     - files:
-        - <name of file>:
-            <creation of file: content/template/remote>
+        - somefile.txt:
+            <creation of file: content/template>
 
-Template interpolation
+Files can be created by one of three ways:
+
+**content**
+The ``content`` directive is the simplest way to create a file. The content of the file is directly specified in the structure file::
+
+    files:
+        - somefile.txt:
+            content: This is the content of the file.
+
+**template**
+The ``template`` directive takes the content to be used in a file from a template which is interpreted with the options from the options file::
+
+    files:
+        - somefile.txt:
+            template: /path/to/the/template.txt
+
+The template name doesn't need to match the name of the file to be created. The template gets rendered with the options as variables and then written to the specified filepath.
+A full explanation of template-rendering and the options file is given below: `Options and templates`_
+
+**remote**
+The ``remote`` directive takes a file or folders from a remote location and copies it in the specified directory. ``remote`` is always placed directly unerneath a folder::
+
+    topfolder:
+        subfolder:
+            remote: 'ssh://user@host:/home/user'
+
+In this example the folder *subfolder* will have the contents of the remote folder after upersetter is executed. If the remote is only a file, only that will be copied to the local directory, else the whole directory tree will be copied.
+The remote handling is done by `AnyPath <http://github.com/vaubarth/anypath>`_ - see there to check out supported protocols from where to fetch remote resources.
+
+Templates within structure files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+It is possible to use the full range of template syntax and interpolation within structure files.
+This allows for example to dynamically specify names of files and folders, to use loops to create files and folders and much more::
+
+    {{dynamic_name_of_topfolder}}:
+        - files:
+            {{dynamic_name_of_file}}
 
 Options and templates
 ^^^^^^^^^^^^^^^^^^^^^
@@ -81,8 +141,14 @@ Interactive usage
 
 Why another bootstrapping tool
 ------------------------------
-Rational
-Differences to cookiecutter
+upersetter aims to be simple and flexible. Some of the design goals do not align with other projects that solve the same need for setting up folders and files in a reproducible and easy way.
+This section should explain why another approach was taken and why upersetter exists.
+
+In the python world `cookiecutter <http://github.com/audreyr/cookiecutter>`_ is a popular project that achieves the same goal as upersetter.
+It differs in a variety of ways, which makes the suitable for different kind of projects and styles of approaching the problem.
+If you are not familiar with cookiecutter, check it out and give it a try, it is an amazing project which is very mature (which cannot be said for upersetter as this point)
+
+Differences...
 
 Contributing
 ============

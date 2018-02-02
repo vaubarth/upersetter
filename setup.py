@@ -24,6 +24,7 @@ setup(
         'jinja2',
         'pyyaml',
         'dpath',
-        'click'
+        'click',
+        'anypath'
     ]
 )
