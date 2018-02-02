@@ -7,6 +7,8 @@ It provides the ability to describe a project in yaml format and create files an
 upersetter uses a full-featured templating engine (jinja2) in order to allow custom variables to be used when creating a new project.
 It also features an interactive mode to allow guided project creation for end-users.
 
+- Checkout the `examples <tree/master/examples>`_. to see some usecases.
+- Checkout why this project exists and how it is different to cookiecutter in the section `Why another bootstrapping tool`_
 
 Getting Started
 ===============
@@ -21,7 +23,7 @@ As soon as it gets its first release upersetter will be available on pypi
 
 Dependencies
 ^^^^^^^^^^^^
-upersetter has the ability to fetch content from remote sources. This is done via `AnyPath <http://github...>`_
+upersetter has the ability to fetch content from remote sources. This is done via `AnyPath <http://github.com/vaubarth/anypath>`_
 Anypath and has the same dependencies as Anypath does for the different protocols.
 
 (upersetter depends on AnyPath but AnyPath does not install any dependencies for the different protocols by default)
@@ -52,24 +54,35 @@ The project will then be created in your current working directory.
 In the above example upersetter will create a folder with the name *topfolder*.
 Underneath that a file with the name *afile* and the content *somecontent*, as well as a folder with the name *subfolder* will be created. *subfolder* again has a subfolder *subsubfolder* which contains the file *anotherfile* with the content *abc*
 
+
 Doing more useful stuff
 -----------------------
 ...
 
 Structure syntax
 ^^^^^^^^^^^^^^^^
-Folders
+A structure file primarily contains two kinds of elements: folders and files
 
-Files
-    - content
-    - template
-    - remote
+In general the structure file resembles a directory tree, however there is some special syntax to denote how a file should be created or filled with content.
+
+- <name of folder>:
+    - files:
+        - <name of file>:
+            <creation of file: content/template/remote>
+
+Template interpolation
 
 Options and templates
 ^^^^^^^^^^^^^^^^^^^^^
 
 Interactive usage
 ^^^^^^^^^^^^^^^^^
+
+
+Why another bootstrapping tool
+------------------------------
+Rational
+Differences to cookiecutter
 
 Contributing
 ============
