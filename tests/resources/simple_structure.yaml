@@ -1,11 +1,11 @@
 test:
-  files:
+  :files:
     - testfile1:
         content: testfile1 content
     - testfile2:
         content: testfile2 content
   test1:
     test2:
-      files:
+      :files:
         - testfile3:
             content: testfile3 content

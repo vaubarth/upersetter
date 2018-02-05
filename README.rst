@@ -35,31 +35,38 @@ Describing your project can be done either in the form of yaml files or in code 
 
 In the most basic case you describe the structure of your project in a file called *structure.yaml*::
 
-   topfolder:
-    files:
-        - afile:
-            content: somecontent
-    subfolder:
-        subsubfolder:
-            files:
-                - anotherfile:
-                    content: abc
+    topfolder:
+        :files:
+            - afile:
+                content: somecontent
+        subfolder:
+            subsubfolder:
+                :files:
+                    - anotherfile:
+                        content: {{anotherfile.content}}
 
-You then execute the following command::
+`{{anotherfile.content}}` is a template expression which can be resolved by specifying the variable antotherfile.content in a *options.yaml* file::
 
-    python -m upersetter setup folder path/where/the/structure
+    anotherfile:
+        content: Some content for the file
+
+The template expression can also be resolved by interactive usage of upersetter where you can specify the variable on the commandline (see `Interactive Usage`_)
+
+Given you the files `structure.yaml` and `options.yaml` are in a folder called /user/example you can execute the following::
+
+    python -m upersetter setup folder /user/example
 
 The project will then be created in your current working directory.
 
 In the above example upersetter will create a folder with the name *topfolder*.
-Underneath that a file with the name *afile* and the content *somecontent*, as well as a folder with the name *subfolder* will be created. *subfolder* again has a subfolder *subsubfolder* which contains the file *anotherfile* with the content *abc*
+Underneath that a file with the name *afile* and the content *somecontent*, as well as a folder with the name *subfolder* will be created.
+*subfolder* again has a subfolder *subsubfolder* which contains the file *anotherfile* with the content *Some content for the file* which is specified in the options.yaml file.
 
 However upersetter provides much more dynamic ways to create a project from templates, the commandline or even remote resources.
 
 Advanced usage
 --------------
-Following generally useful advanced features of upersetter will be described.
-    Full featured examples can be found in the  examples_ folder which shows usages of all features available.
+Full featured examples can be found in the  examples_ folder which shows usages of all features available.
 
 Structure syntax
 ^^^^^^^^^^^^^^^^
@@ -71,10 +78,10 @@ In general a structure file looks like this::
 
     <name of folder>:
         <name of subfolder>:
-            files:
+            :files:
                 - <name of file>:
                     <creation of file: content/template>
-        files:
+        :files:
             - <name of file>:
                 <creation of file: content/template>
         <name of second subfolder>:
@@ -90,7 +97,8 @@ Folders are a dictionary keys in the yaml file. Folders can have files and other
 A list of files is started with a ``files:`` entry
 After that a list of key value pairs representing the filename as the key and the way how to create the file as the value describes the files::
 
-    - files:
+
+    :files:
         - somefile.txt:
             <creation of file: content/template>
 
@@ -99,14 +107,16 @@ Files can be created by one of three ways:
 **content**
 The ``content`` directive is the simplest way to create a file. The content of the file is directly specified in the structure file::
 
-    files:
+
+    :files:
         - somefile.txt:
             content: This is the content of the file.
 
 **template**
 The ``template`` directive takes the content to be used in a file from a template which is interpreted with the options from the options file::
 
-    files:
+
+    :files:
         - somefile.txt:
             template: /path/to/the/template.txt
 
@@ -118,7 +128,7 @@ The ``remote`` directive takes a file or folders from a remote location and copi
 
     topfolder:
         subfolder:
-            remote: 'ssh://user@host:/home/user'
+            :remote: 'ssh://user@host:/home/user'
 
 In this example the folder *subfolder* will have the contents of the remote folder after upersetter is executed. If the remote is only a file, only that will be copied to the local directory, else the whole directory tree will be copied.
 The remote handling is done by `AnyPath <http://github.com/vaubarth/anypath>`_ - see there to check out supported protocols from where to fetch remote resources.
@@ -129,7 +139,7 @@ It is possible to use the full range of template syntax and interpolation within
 This allows for example to dynamically specify names of files and folders, to use loops to create files and folders and much more::
 
     {{dynamic_name_of_topfolder}}:
-        - files:
+        :files:
             {{dynamic_name_of_file}}
 
 Options and templates

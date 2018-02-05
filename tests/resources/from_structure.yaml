@@ -1,3 +1,3 @@
 test:
-  remote:
+  :remote:
     test2: 'file://{{ remote_dir }}'

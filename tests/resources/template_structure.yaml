@@ -1,4 +1,4 @@
 test:
-  files:
+  :files:
     - 'index.html':
         template: template.html

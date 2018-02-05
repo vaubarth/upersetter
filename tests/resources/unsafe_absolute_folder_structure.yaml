@@ -1,4 +1,4 @@
 /test:
-    files:
+    :files:
       - testfile:
           content: testfile content

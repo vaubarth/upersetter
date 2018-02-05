@@ -22,7 +22,7 @@ class FileHandler:
         self.options = setup._options
 
     def check(self):
-        return self.key == 'files' and isinstance(self.value, list)
+        return self.key == ':files' and isinstance(self.value, list)
 
     def create(self):
         for file in self.value:
@@ -58,7 +58,7 @@ class RemoteHandler:
         path_provider.add(HttpPath, GitPath, HgPath, LocalPath, SftpPath)
 
     def check(self):
-        if self.key == 'remote':
+        if self.key == ':remote':
             for local, remote in self.value.items():
                 if not isinstance(local, str) and not isinstance(remote, str):
                     return False

@@ -14,7 +14,7 @@ class TestSetup(unittest.TestCase):
         content = 'abc'
         structure = {
             'testfolder': {
-                'files': [
+                ':files': [
                     {'testfile': {'content': content}}
                 ]
             }
