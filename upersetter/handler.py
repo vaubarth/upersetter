@@ -44,7 +44,13 @@ class FileHandler:
         self.out_dir.joinpath(path).write_text(content)
 
     def from_template(self, file_inner):
-        return get_expanded(str(self.templates_path), file_inner['template'], self.options)
+        if isinstance(file_inner['template'], dict):
+            template = file_inner['template']['file']
+            options = file_inner['template']['context']
+        else:
+            template = file_inner['template']
+            options = self.options
+        return get_expanded(str(self.templates_path), template, options)
 
 
 class RemoteHandler:

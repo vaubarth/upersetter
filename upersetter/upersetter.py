@@ -39,7 +39,7 @@ def files(structure, options, outdir, templates, metadata, unsafe, background, p
 
 @click.command()
 @click.argument('path')
-@click.option('--outdir', default='.')
+@click.option('--outdir', default='./')
 @click.option('--unsafe', is_flag=True)
 @click.option('--background', is_flag=True)
 @click.argument('params', nargs=-1)

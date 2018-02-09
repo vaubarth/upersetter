@@ -7,7 +7,7 @@ def readme():
 
 setup(
     name='upersetter',
-    version='0.8.0',
+    version='0.8.5',
     url='https://github.com/vaubarth/upersetter',
     license='Mozilla Public License 2.0 (MPL 2.0)',
     author='Vincent Barth',

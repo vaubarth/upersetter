@@ -26,7 +26,7 @@ class SetUp:
 
         self._templates_path = Path('./templates')
         self._options = {}
-        self._out_dir = Path('.')
+        self._out_dir = Path('./')
         self._unsafe = False
         self._metadata = None
 
@@ -68,7 +68,7 @@ class SetUp:
 
     @out_dir.setter
     def out_dir(self, value):
-        self._out_dir = Path(value)
+        self._out_dir = Path(value).resolve()
 
     @property
     def unsafe(self):
@@ -124,7 +124,6 @@ class Interact:
                 self.do_interaction(v, parent + '.' + k)
         except AttributeError:
             self._ask(parent, options)
-        print(self._options)
         return self._options
 
     def _ask(self, parent, options):

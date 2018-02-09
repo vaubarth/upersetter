@@ -19,7 +19,6 @@ class Scanner:
     def scan(self):
         self.template_folder.mkdir()
         self._scan_dir(deepcopy(self.to_scan), self.structure)
-        print(self.structure)
         with self.out_dir.joinpath('structure.yaml').open('w+') as f:
             yaml.safe_dump(self.structure, f)
 
