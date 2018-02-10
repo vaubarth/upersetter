@@ -44,12 +44,20 @@ def files(structure, options, outdir, templates, metadata, unsafe, background, p
 @click.option('--background', is_flag=True)
 @click.argument('params', nargs=-1)
 def folder(path, outdir, unsafe, background, params):
+    metadata = Path(path).joinpath('metadata.yaml')
+    options = Path(path).joinpath('options.yaml')
+    templates = Path(path).joinpath('templates')
+
     setup = SetUp(str(Path(path).joinpath('structure.yaml')))
-    setup.options = str(Path(path).joinpath('options.yaml'))
-    setup.templates = str(Path(path).joinpath('templates'))
     setup.out_dir = outdir
     setup.unsafe = unsafe
-    setup.metadata = str(Path(path).joinpath('metadata.yaml'))
+
+    if metadata.exists():
+        setup.metadata = str(metadata)
+    if options.exists():
+        setup.options = str(options)
+    if templates.exists():
+        setup.templates = str(templates)
     setup.setup(not background)
 
 

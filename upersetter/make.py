@@ -28,7 +28,7 @@ class SetUp:
         self._options = {}
         self._out_dir = Path('./')
         self._unsafe = False
-        self._metadata = None
+        self._metadata = {}
 
         self.structure = structure
 
