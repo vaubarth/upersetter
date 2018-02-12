@@ -7,14 +7,31 @@ It provides the ability to describe a project in yaml format and create files an
 upersetter uses a full-featured templating engine (jinja2) in order to allow custom variables to be used when creating a new project.
 It also features an interactive mode to allow guided project creation for end-users.
 
-- Checkout the `examples <tree/master/examples>`_. to see some usecases.
-- Checkout why this project exists and how it is different to cookiecutter in the section `Why another bootstrapping tool`_
+Learn more about why this project exists and how it is different to e.g. cookiecutter in the section `Why another bootstrapping tool`_.
+If you are interested in learning more there are `examples <tree/master/examples>`_. which illustrate some usecases.
 
-Getting Started
-===============
+
+- `Installation`_
+
+  -  `Dependencies`_
+
+- `Basic Usage`_
+- `Advanced usage`_
+
+  - `Structure syntax`_
+
+    - `Templates within structure files`_
+
+  - `Options and templates`_
+  - `Interactive usage`_
+
+- `Why another bootstrapping tool`_
+- `Contributing`_
+- `License`_
+
 
 Installation
-------------
+============
 To install simply do::
 
     python setup.py install
@@ -22,7 +39,7 @@ To install simply do::
 As soon as it gets its first release upersetter will be available on pypi
 
 Dependencies
-^^^^^^^^^^^^
+------------
 upersetter has the ability to fetch content from remote sources. This is done via `AnyPath <http://github.com/vaubarth/anypath>`_
 Anypath and has the same dependencies as Anypath does for the different protocols.
 
@@ -30,7 +47,7 @@ Anypath and has the same dependencies as Anypath does for the different protocol
 
 
 Basic Usage
------------
+===========
 Describing your project can be done either in the form of yaml files or in code as dictionaries.
 
 In the most basic case you describe the structure of your project in a file called *structure.yaml*::
@@ -52,7 +69,7 @@ In the most basic case you describe the structure of your project in a file call
 
 The template expression can also be resolved by interactive usage of upersetter where you can specify the variable on the commandline (see `Interactive Usage`_)
 
-Given you the files `structure.yaml` and `options.yaml` are in a folder called /user/example you can execute the following::
+Given you the files :code:`structure.yaml` and :code:`options.yaml` are in a folder called /user/example you can execute the following::
 
     python -m upersetter setup folder /user/example
 
@@ -65,11 +82,11 @@ Underneath that a file with the name *afile* and the content *somecontent*, as w
 However upersetter provides much more dynamic ways to create a project from templates, the commandline or even remote resources.
 
 Advanced usage
---------------
+==============
 Full featured examples can be found in the  examples_ folder which shows usages of all features available.
 
 Structure syntax
-^^^^^^^^^^^^^^^^
+----------------
 A structure file primarily contains two kinds of elements: folders and files
 
 In general the structure file resembles a directory tree, however there is some special syntax to denote how files and folders should be created or filled with content.
@@ -94,7 +111,7 @@ Folders are a dictionary keys in the yaml file. Folders can have files and other
     another topfolder:
         ...
 
-A list of files is started with a ``files:`` entry
+A list of files is started with a :code:`:files:` entry
 After that a list of key value pairs representing the filename as the key and the way how to create the file as the value describes the files::
 
 
@@ -105,7 +122,7 @@ After that a list of key value pairs representing the filename as the key and th
 Files can be created by one of three ways:
 
 **content**
-The ``content`` directive is the simplest way to create a file. The content of the file is directly specified in the structure file::
+The :code:`content` directive is the simplest way to create a file. The content of the file is directly specified in the structure file::
 
 
     :files:
@@ -113,7 +130,7 @@ The ``content`` directive is the simplest way to create a file. The content of t
             content: This is the content of the file.
 
 **template**
-The ``template`` directive takes the content to be used in a file from a template which is interpreted with the options from the options file::
+The :code:`template` directive takes the content to be used in a file from a template which is interpreted with the options from the options file::
 
 
     :files:
@@ -124,7 +141,7 @@ The template name doesn't need to match the name of the file to be created. The 
 A full explanation of template-rendering and the options file is given below: `Options and templates`_
 
 **remote**
-The ``remote`` directive takes a file or folders from a remote location and copies it in the specified directory. ``remote`` is always placed directly unerneath a folder::
+The :code:`remote` directive takes a file or folders from a remote location and copies it in the specified directory. :code:`remote` is always placed directly unerneath a folder::
 
     topfolder:
         subfolder:
@@ -134,7 +151,7 @@ In this example the folder *subfolder* will have the contents of the remote fold
 The remote handling is done by `AnyPath <http://github.com/vaubarth/anypath>`_ - see there to check out supported protocols from where to fetch remote resources.
 
 Templates within structure files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 It is possible to use the full range of template syntax and interpolation within structure files.
 This allows for example to dynamically specify names of files and folders, to use loops to create files and folders and much more::
 
@@ -143,14 +160,14 @@ This allows for example to dynamically specify names of files and folders, to us
             {{dynamic_name_of_file}}
 
 Options and templates
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 Interactive usage
-^^^^^^^^^^^^^^^^^
+-----------------
 
 
 Why another bootstrapping tool
-------------------------------
+==============================
 upersetter aims to be simple and flexible. Some of the design goals do not align with other projects that solve the same need for setting up folders and files in a reproducible and easy way.
 This section should explain why another approach was taken and why upersetter exists.
 
@@ -171,5 +188,5 @@ Contributions are welcome for example:
 Just file an issue in the tracker first describing what you would like to do and then create a pull-request.
 
 License
--------
+=======
 upersetter is licensed under "Mozilla Public License Version 2.0". See LICENSE.txt for the full license.
