@@ -1,0 +1,11 @@
+test:
+  :files:
+    - 'test_direct.txt':
+        content: test_direct
+  :script:
+    from:
+      - script.py:
+          template: script.py
+    run:
+      - python
+      - script.py

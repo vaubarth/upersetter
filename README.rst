@@ -8,7 +8,7 @@ upersetter uses a full-featured templating engine (jinja2) in order to allow cus
 It also features an interactive mode to allow guided project creation for end-users.
 
 Learn more about why this project exists and how it is different to e.g. cookiecutter in the section `Why another bootstrapping tool`_.
-If you are interested in learning more there are `examples <tree/master/examples>`_. which illustrate some usecases.
+If you are interested in learning more there are `examples <https://github.com/vaubarth/upersetter/tree/master/examples>`_. which illustrate some usecases.
 
 
 - `Installation`_
@@ -20,9 +20,13 @@ If you are interested in learning more there are `examples <tree/master/examples
 
   - `Structure syntax`_
 
-    - `Templates within structure files`_
+    - `File creation - The files directive`_
+    - `Fetching remote resources - The remote directive`_
+    - `Executing external scripts - The scripts directive`_
 
-  - `Options and templates`_
+  - `Templates within structure files`_
+
+  - `The options file - using templates`_
   - `Interactive usage`_
 
 - `Why another bootstrapping tool`_
@@ -102,6 +106,8 @@ In general a structure file looks like this::
             - <name of file>:
                 <creation of file: content/template>
         <name of second subfolder>:
+            :<some_directive>:
+                ...
 
 Folders are a dictionary keys in the yaml file. Folders can have files and other folders as sub-entries::
 
@@ -111,7 +117,18 @@ Folders are a dictionary keys in the yaml file. Folders can have files and other
     another topfolder:
         ...
 
-A list of files is started with a :code:`:files:` entry
+
+Files and folders can be created in three different ways - called directives. The following directives are available:
+
+- :code:`:files:`
+- :code:`:from:`
+- :code:`:script:`
+
+File creation - The files directive
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The files directive creates files either from a template or directly from given content strings.
+It is indicated with :code:`:files:`
+
 After that a list of key value pairs representing the filename as the key and the way how to create the file as the value describes the files::
 
 
@@ -119,10 +136,10 @@ After that a list of key value pairs representing the filename as the key and th
         - somefile.txt:
             <creation of file: content/template>
 
-Files can be created by one of three ways:
+Files can be created in the following ways:
 
 **content**
-The :code:`content` directive is the simplest way to create a file. The content of the file is directly specified in the structure file::
+:code:`content` is the simplest way to create a file. The content of the file is directly specified in the structure file::
 
 
     :files:
@@ -130,7 +147,7 @@ The :code:`content` directive is the simplest way to create a file. The content 
             content: This is the content of the file.
 
 **template**
-The :code:`template` directive takes the content to be used in a file from a template which is interpreted with the options from the options file::
+:code:`template` takes the content to be used in a file from a template which is interpreted with the options from the options file::
 
 
     :files:
@@ -140,8 +157,13 @@ The :code:`template` directive takes the content to be used in a file from a tem
 The template name doesn't need to match the name of the file to be created. The template gets rendered with the options as variables and then written to the specified filepath.
 A full explanation of template-rendering and the options file is given below: `Options and templates`_
 
-**remote**
-The :code:`remote` directive takes a file or folders from a remote location and copies it in the specified directory. :code:`remote` is always placed directly unerneath a folder::
+
+Fetching remote resources - The remote directive
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The remote directive takes a file or folders from a remote location and copies it in the specified directory.
+It is indicated with :code:`:remote:`
+
+:code:`remote` is always placed directly underneath a folder::
 
     topfolder:
         subfolder:
@@ -150,8 +172,31 @@ The :code:`remote` directive takes a file or folders from a remote location and 
 In this example the folder *subfolder* will have the contents of the remote folder after upersetter is executed. If the remote is only a file, only that will be copied to the local directory, else the whole directory tree will be copied.
 The remote handling is done by `AnyPath <http://github.com/vaubarth/anypath>`_ - see there to check out supported protocols from where to fetch remote resources.
 
+
+Executing external scripts - The scripts directive
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The script directive executes a given script in the given directory.
+It is indicated with :code:`:script:`
+
+The script itself follows the file directive and can either be created via a template or directly from a string::
+
+    topfolder:
+        :script:
+            from:
+              - file_info.py:
+                  template: file_info.py
+            run:
+              - python
+              - file_info.py
+
+*run* specifies the actual call of the script, it is a list which will be passed to subprocess and follows the same rules, examples::
+
+    ['interpreter', 'script', 'arg', 'arg2']
+    ['script', '-arg', 'foo']
+
+
 Templates within structure files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 It is possible to use the full range of template syntax and interpolation within structure files.
 This allows for example to dynamically specify names of files and folders, to use loops to create files and folders and much more::
 
@@ -159,8 +204,10 @@ This allows for example to dynamically specify names of files and folders, to us
         :files:
             {{dynamic_name_of_file}}
 
-Options and templates
----------------------
+... TODO: Passing inner scope to a template ...
+
+The options file - using templates
+----------------------------------
 
 Interactive usage
 -----------------

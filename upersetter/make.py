@@ -5,7 +5,7 @@ import click
 import dpath
 import yaml
 
-from upersetter.handler import FileHandler, RemoteHandler
+from upersetter.handler import FileHandler, RemoteHandler, ScriptHandler
 from upersetter.utils import get_expanded, prompt_for_choice, get_list_input, prompt_for_input, check_if_safe, prompt_for_list
 
 
@@ -22,7 +22,7 @@ class SetUp:
     :param unsafe: If true allows unsafe path expansion - by default (safe) only paths inside the specified out_path are allowed to be written
     """
     def __init__(self, structure):
-        self.structure_hooks = [FileHandler, RemoteHandler]
+        self.structure_hooks = [FileHandler, RemoteHandler, ScriptHandler]
 
         self._templates_path = Path('./templates')
         self._options = {}

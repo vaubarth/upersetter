@@ -7,6 +7,15 @@
       :files:
         - info.txt:
             template: orig.txt
+      :remote:
+        translate.html: 'http://example.org'
+      :script:
+        from:
+          - file_info.py:
+              template: file_info.py
+        run:
+          - python
+          - file_info.py
     {% for language in languages.to %}to_{{language.lang}}:
       :files:
         - translator.txt:

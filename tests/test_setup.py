@@ -120,10 +120,24 @@ class TestSetup(unittest.TestCase):
                 f.write(content)
             with tempfile.TemporaryDirectory() as out_dir_name:
 
-                setup = SetUp('./resources/from_structure.yaml')
+                setup = SetUp('./resources/remote_structure.yaml')
                 setup.out_dir = out_dir_name
                 setup.options = options
                 setup.setup()
 
                 self.assertEqual(Path(out_dir_name).joinpath('test', 'test2', 'test_file').read_text(), content,
                                  'Content of testfile incorrect')
+
+    def test_from_script(self):
+
+        with tempfile.TemporaryDirectory() as out_dir_name:
+            setup = SetUp('./resources/script_structure.yaml')
+            setup.options = './resources/options.yaml'
+            setup.templates = './resources'
+            setup.out_dir = out_dir_name
+            setup.setup()
+
+            self.assertEqual(Path(out_dir_name).joinpath('test', 'test_direct.txt').read_text(), 'test_direct',
+                             'Content of normally created testfile incorrect')
+            self.assertEqual(Path(out_dir_name).joinpath('test', 'test_script.txt').read_text(), 'test_script',
+                             'Content of script created testfile incorrect')

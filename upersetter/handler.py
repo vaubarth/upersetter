@@ -1,5 +1,8 @@
 from pathlib import Path
 
+import subprocess
+
+import os
 from anypath.anypath import AnyPath, path_provider
 from anypath.pathprovider.git import GitPath
 from anypath.pathprovider.http import HttpPath
@@ -12,6 +15,7 @@ from upersetter.utils import check_if_safe, get_expanded
 
 class FileHandler:
     """Handles creation of files either based on a content string or a template defined in the structure"""
+
     def __init__(self, key, value, parent, setup):
         self.key = key
         self.value = value
@@ -25,8 +29,10 @@ class FileHandler:
         return self.key == ':files' and isinstance(self.value, list)
 
     def create(self):
+        created = []
         for file in self.value:
-            self.make_file(file)
+            created.append(self.make_file(file))
+        return created
 
     def make_file(self, file):
         name = list(file.keys())[0]
@@ -41,7 +47,9 @@ class FileHandler:
             content = file_inner['content']
         else:
             raise NotImplemented(f'No appropriate key in the file description to handle {file}')
-        self.out_dir.joinpath(path).write_text(content)
+        final_path = self.out_dir.joinpath(path)
+        final_path.write_text(content)
+        return final_path
 
     def from_template(self, file_inner):
         if isinstance(file_inner['template'], dict):
@@ -57,6 +65,7 @@ class RemoteHandler:
     """Handles getting files and folders from a remote location.
     The files and folders will be copied instead of created from scratch from the structure definition.
     """
+
     def __init__(self, key, value, parent, setup):
         self.key = key
         self.value = value
@@ -72,4 +81,27 @@ class RemoteHandler:
 
     def create(self):
         for local, remote in self.value.items():
-            AnyPath(remote, self.parent.joinpath(local)).fetch()
+            ap = AnyPath(remote, self.parent.joinpath(local))
+            ap.fetch()
+            ap.close()
+
+
+class ScriptHandler:
+    """Runs a script to create folders or do general tasks.
+    """
+
+    def __init__(self, key, value, parent, setup):
+        self.key = key
+        self.value = value
+        self.parent = Path(parent) if parent else Path()
+        self.setup = setup
+
+    def check(self):
+        return self.key == ':script' and isinstance(self.value, dict)
+
+    def create(self):
+        file_handler = FileHandler(self.key, self.value['from'], self.parent, self.setup)
+        created_files = file_handler.create()
+        subprocess.check_call(self.value['run'], cwd=str(self.parent.resolve()))
+        for created_file in created_files:
+            os.remove(created_file)
