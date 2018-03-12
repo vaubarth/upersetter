@@ -121,7 +121,7 @@ Folders are a dictionary keys in the yaml file. Folders can have files and other
 Files and folders can be created in three different ways - called directives. The following directives are available:
 
 - :code:`:files:`
-- :code:`:from:`
+- :code:`:remote:`
 - :code:`:script:`
 
 File creation - The files directive
