@@ -204,7 +204,17 @@ This allows for example to dynamically specify names of files and folders, to us
         :files:
             {{dynamic_name_of_file}}
 
-... TODO: Passing inner scope to a template ...
+By default a template gets the root scope of the options to evaluate. This means that it has access to everything even if the template evaluation was called from within a template loop.
+Sometimes it is desirable to pass the current block scope instead of the root - especially if the template is called from within a loop and should access exactly whatever is in the current iteration.
+
+This can be achieved by passing a context::
+
+    {% for item in items %} {{item.name}}:
+      :files:
+        - some_file:
+            template: {file: some_template, context: {{item}} }
+    {% endfor %}
+
 
 The options file - using templates
 ----------------------------------
