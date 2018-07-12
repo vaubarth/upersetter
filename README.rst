@@ -36,11 +36,10 @@ If you are interested in learning more there are `examples <https://github.com/v
 
 Installation
 ============
-To install simply do::
+upersetter is available on pypi::
 
-    python setup.py install
+    pip install upersetter
 
-As soon as it gets its first release upersetter will be available on pypi
 
 Dependencies
 ------------
@@ -218,10 +217,11 @@ This can be achieved by passing a context::
 
 The options file - using templates
 ----------------------------------
+tbd
 
 Interactive usage
 -----------------
-
+tbd
 
 Why another bootstrapping tool
 ==============================
@@ -229,10 +229,13 @@ upersetter aims to be simple and flexible. Some of the design goals do not align
 This section should explain why another approach was taken and why upersetter exists.
 
 In the python world `cookiecutter <http://github.com/audreyr/cookiecutter>`_ is a popular project that achieves the same goal as upersetter.
-It differs in a variety of ways, which makes the suitable for different kind of projects and styles of approaching the problem.
+It differs in a variety of ways, which makes it suitable for different kind of projects and styles of approaching the problem.
 If you are not familiar with cookiecutter, check it out and give it a try, it is an amazing project which is very mature (which cannot be said for upersetter as this point)
 
-Differences...
+One of the main differences is that upersetter describes the directory structure in a file. cookiecutter for example uses the filesystem itself and puts placeholders in e.g. folder names.
+On one hand this makes it easier to see how the result will look like, on the other hand describing the whole structure in a file makes it easier to do things like creating multiple subfolders based on user input.
+
+uppersetter also works with nested input parameters whereas cookiecutter uses flat descriptions.
 
 Contributing
 ============
